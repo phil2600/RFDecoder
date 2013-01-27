@@ -1,12 +1,12 @@
 #include "SingletonDecoder.h"
 
 void
-SingletonDecoder::setValue(OregonDecoder*	decoder) 
+SingletonDecoder::setValue(OregonDecoderV2*	decoder) 
 {
 	_value = decoder; 
 }
   
-OregonDecoder* 
+OregonDecoderV2* 
 SingletonDecoder::getValue() 
 { 
 	return _value; 

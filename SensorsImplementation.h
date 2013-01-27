@@ -12,7 +12,7 @@ class THGR810 : public Sensor
 public:
 	THGR810();
     char*	Name();
-	void	print();
+	void	print(const byte* data);
 };
 
 /*
@@ -23,7 +23,7 @@ class THN132N : public Sensor
 public:
 	THN132N();
     char*	Name();
-	void	print();
+	void	print(const byte* data);
 };
 
 /*
@@ -34,7 +34,7 @@ class LaCrosseNoName : public Sensor
 public:
 	LaCrosseNoName();
     char*	Name();
-	void	print();
+	void	print(const byte* data);
 };
 
 #endif

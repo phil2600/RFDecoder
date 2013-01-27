@@ -2,7 +2,7 @@
 #ifndef _SINGLETONDECODER_H_
 # define _SINGLETONDECODER_H_
 
-# include "OregonDecoder.h"
+# include "OregonDecoderV2.h"
 
 class SingletonDecoder
 {
@@ -12,8 +12,8 @@ private:
   ~SingletonDecoder () { }
 
 public:
-  void setValue (OregonDecoder* decoder);
-  OregonDecoder* getValue ();
+  void setValue (OregonDecoderV2* decoder);
+  OregonDecoderV2* getValue ();
 
   // Fonctions de création et destruction du singleton
   static SingletonDecoder *getInstance ();
@@ -22,7 +22,7 @@ public:
 
 
 private:
-  OregonDecoder* _value;
+  OregonDecoderV2* _value;
   static SingletonDecoder *_singleton;
 };
 

@@ -15,7 +15,7 @@ public:
 	// Virtual methods
 	//
 	virtual char*	Name() = 0;
-	virtual void	print() = 0;
+	virtual void	print(const byte* data) = 0;
 
 	//
 	// Global methods

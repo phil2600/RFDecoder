@@ -19,7 +19,7 @@ public:
 		DONE
 	};
 
-	GlobalDecoder();
+	GlobalDecoder(byte gap =5, byte count =0): lastCrc (0), lastTime (0), repeats (0), minGap (gap), minCount (count) { reset_decoder(); }
 	~GlobalDecoder();
 		
 	bool			nextPulse(word	width);
@@ -28,9 +28,10 @@ public:
 	const byte 		*get_data(byte	&count) const;
 	void 			reset_decoder();
 	void 			manchester(char	value);
-	void 			alignTail(byte 	max = 0);
-	void 			reverse_bits();
-	void 			reverseNibbles();
+	//void 			alignTail(byte 	max = 0);
+	//void 			reverse_bits();
+	//void 			reverseNibbles();
+	bool			checkRepeats();
 
 	virtual void	printSerial() = 0;
 	void			initialize(ASensorFactory*	sensor_pool);
@@ -44,9 +45,13 @@ protected:
 	byte 			_data[25];
 	ASensorFactory*	_sensor_pool;
 
+	// the following fields are used to deal with duplicate packets
+    word lastCrc, lastTime;
+    byte repeats, minGap, minCount;
+
 	virtual char	decode(word width) = 0;
 
-	virtual void	get_bit(char	value); 
+	virtual void	add_bit(char	value); 
 };
 
 #endif

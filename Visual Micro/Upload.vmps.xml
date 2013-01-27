@@ -8,7 +8,7 @@
       <VCCodeMacros>
         <VCCodeMacro Name="ARDUINO" Value="103" />
         <VCCodeMacro Name="GLOBAL_DECODER_H_" Value="" />
-        <VCCodeMacro Name="_OREGON_DECODER_H_" Value="" />
+        <VCCodeMacro Name="_OREGON_DECODERV2_H_" Value="" />
         <VCCodeMacro Name="__AVR_ATmega2560__" Value="" />
         <VCCodeMacro Name="SENSOR_H_" Value="" />
         <VCCodeMacro Name="_SINGLETONDECODER_H_" Value="" />
@@ -16,6 +16,7 @@
         <VCCodeMacro Name="A_SENSOR_FACTORY_H" Value="" />
         <VCCodeMacro Name="_SENSOR_FACTORY_H_" Value="" />
         <VCCodeMacro Name="F_CPU" Value="16000000L" />
+        <VCCodeMacro Name="SerialBaudrate" Value="115200" />
         <VCCodeMacro Name="__AVR__" Value="" />
         <VCCodeMacro Name="BYTE2LO" Value="((c)&amp;0xF)" />
         <VCCodeMacro Name="__cplusplus" Value="" />
@@ -41,7 +42,7 @@
         <VCCodeMacro Name="NOINLINE" Value="__attribute__((noinline))" />
       </VCCodeMacros>
       <VCCodeVariables>
-        <VCCodeVariable Name="pulse" />
+        <VCCodeVariable Name="DATAPIN" />
       </VCCodeVariables>
     </VCCodeModel>
   </Program>

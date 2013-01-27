@@ -2,7 +2,7 @@
 #ifndef A_SENSOR_FACTORY_H
 # define A_SENSOR_FACTORY_H
 # include "Sensor.h"
-# include "OregonDecoder.h"
+# include "OregonDecoderV2.h"
 
 /*
 ** Definition of the Abstract Factory
@@ -13,6 +13,8 @@ public:
 	ASensorFactory(): _index(0)
 	{ }
 
+	typedef enum type { eTHGR810, eTHN132N, eLC } e_type;
+	
 	virtual Sensor* new_THGR810() = 0;
     virtual Sensor* new_THN132N() = 0;
 	virtual Sensor* new_LC_sensor() = 0;
@@ -20,23 +22,26 @@ public:
 	virtual void	trigger(word	old_pulse) = 0;
 	virtual void	print_sensor(int	i) = 0;
 	virtual void	parse_data() = 0;
-	virtual Sensor*	search_sensor(int	id) = 0;
+	virtual Sensor*	search_sensor(byte	id, enum type	t) = 0;
+	virtual Sensor*	add_id(byte	id, enum type t) = 0;
 
 	// Method for the Factory instanciation
     static ASensorFactory*	CreateFactory();
-	virtual void	initialize(OregonDecoder*	dec) = 0;
+	virtual void	initialize(OregonDecoderV2*	dec) = 0;
 	
 protected:
+	
 	typedef struct sensors
 	{
 		Sensor*		_sensor;
-		int			_id;
+		byte		_id;
+		e_type		_type;
 		int			_used;
 	} s_sensors;
+	
 	int				_index;
-    //Sensor*			_sensors[10];
 	s_sensors		_sensors[10];
-	OregonDecoder*	_dec;
+	OregonDecoderV2*	_dec;
 };
 
 #endif
