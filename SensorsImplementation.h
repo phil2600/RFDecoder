@@ -4,13 +4,18 @@
 # include "Arduino.h"
 # include "Sensor.h"
 
+#define BYTE2LO(c)           ((c)&0xF)
+#define BYTE2HI(c)           (((c)>>4)&0xF)
+#define NIBBLES2BYTE(lo, hi) ((((hi)&0xF)<<4)|((lo)&0xF))
+#define INSERTLO(c, lo)      (((c)&0xF0)|((lo)&0xF))
+#define INSERTHI(c, hi)      (((c)&0xF)|(((hi)&0xF)<<4))
+
 /*
 ** Implementation of the THGR810 Sensor
 */
 class THGR810 : public Sensor
 {
 public:
-	THGR810();
     char*	Name();
 	void	print(const byte* data);
 };
@@ -21,7 +26,13 @@ public:
 class THN132N : public Sensor
 {
 public:
-	THN132N();
+    char*	Name();
+	void	print(const byte* data);
+};
+
+class THGR228N : public Sensor
+{
+public:
     char*	Name();
 	void	print(const byte* data);
 };
@@ -32,7 +43,6 @@ public:
 class LaCrosseNoName : public Sensor
 {
 public:
-	LaCrosseNoName();
     char*	Name();
 	void	print(const byte* data);
 };

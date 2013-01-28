@@ -21,16 +21,10 @@
     <ClInclude Include="Visual Micro\.RF.vsarduino.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="OregonDecoder.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalDecoder.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="SingletonDecoder.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="ASensorFactory.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="SensorFactory.h">
@@ -42,24 +36,30 @@
     <ClInclude Include="SensorsImplementation.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="OregonDecoderV2.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="OregonDecoderV3.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OregonDecoder.cpp">
+    <ClCompile Include="SingletonDecoder.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="GlobalDecoder.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="SingletonDecoder.cpp">
+    <ClCompile Include="OregonDecoderV2.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="ASensorFactory.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="SensorFactory.cpp">
+    <ClCompile Include="OregonDecoderV3.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Sensor.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorFactory.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="SensorsImplementation.cpp">

@@ -1,12 +1,13 @@
 #pragma once
-#ifndef _OREGON_DECODERV2_H_
-# define _OREGON_DECODERV2_H_
+#ifndef _OREGON_DECODERV3_H_
+# define _OREGON_DECODERV3_H_
 # include "GlobalDecoder.h"
 # include "SingletonDecoder.h"
 
-class OregonDecoderV2 : public GlobalDecoder
+class OregonDecoderV3 : public GlobalDecoder
 {
 public:
+
 	void	add_bit(char	value);
 
 	// gets called once per incoming pulse with the width in us

@@ -9,25 +9,28 @@
         <VCCodeMacro Name="ARDUINO" Value="103" />
         <VCCodeMacro Name="GLOBAL_DECODER_H_" Value="" />
         <VCCodeMacro Name="_OREGON_DECODERV2_H_" Value="" />
-        <VCCodeMacro Name="__AVR_ATmega2560__" Value="" />
+        <VCCodeMacro Name="_OREGON_DECODERV3_H_" Value="" />
         <VCCodeMacro Name="SENSOR_H_" Value="" />
-        <VCCodeMacro Name="_SINGLETONDECODER_H_" Value="" />
-        <VCCodeMacro Name="_DEFINITIONSENSORS_H_" Value="" />
-        <VCCodeMacro Name="A_SENSOR_FACTORY_H" Value="" />
         <VCCodeMacro Name="_SENSOR_FACTORY_H_" Value="" />
+        <VCCodeMacro Name="_DEFINITIONSENSORS_H_" Value="" />
+        <VCCodeMacro Name="_SINGLETONDECODER_H_" Value="" />
+        <VCCodeMacro Name="__AVR_ATmega2560__" Value="" />
         <VCCodeMacro Name="F_CPU" Value="16000000L" />
-        <VCCodeMacro Name="SerialBaudrate" Value="115200" />
+        <VCCodeMacro Name="IS_THN132N" Value="(d[0] == 0xEA &amp;&amp; d[1] == 0x4C)" />
         <VCCodeMacro Name="__AVR__" Value="" />
-        <VCCodeMacro Name="BYTE2LO" Value="((c)&amp;0xF)" />
+        <VCCodeMacro Name="SERIAL_BAUDRATE" Value="57600" />
+        <VCCodeMacro Name="IS_THGR228N" Value="(d[0] == 0x1A &amp;&amp; d[1] == 0x2D)" />
         <VCCodeMacro Name="__cplusplus" Value="" />
-        <VCCodeMacro Name="BYTE2HI" Value="(((c)&gt;&gt;4)&amp;0xF)" />
+        <VCCodeMacro Name="IS_THGR810" Value="(d[0] == 0xFA &amp;&amp; d[1] == 0x28)" />
+        <VCCodeMacro Name="BYTE2LO" Value="((c)&amp;0xF)" />
         <VCCodeMacro Name="__attribute__" Value="" />
-        <VCCodeMacro Name="NIBBLES2BYTE" Value="((((hi)&amp;0xF)&lt;&lt;4)|((lo)&amp;0xF))" />
+        <VCCodeMacro Name="BYTE2HI" Value="(((c)&gt;&gt;4)&amp;0xF)" />
         <VCCodeMacro Name="__inline__" Value="" />
-        <VCCodeMacro Name="INSERTLO" Value="(((c)&amp;0xF0)|((lo)&amp;0xF))" />
+        <VCCodeMacro Name="NIBBLES2BYTE" Value="((((hi)&amp;0xF)&lt;&lt;4)|((lo)&amp;0xF))" />
         <VCCodeMacro Name="__asm__" Value="" />
-        <VCCodeMacro Name="INSERTHI" Value="(((c)&amp;0xF)|(((hi)&amp;0xF)&lt;&lt;4))" />
+        <VCCodeMacro Name="INSERTLO" Value="(((c)&amp;0xF0)|((lo)&amp;0xF))" />
         <VCCodeMacro Name="__extension__" Value="" />
+        <VCCodeMacro Name="INSERTHI" Value="(((c)&amp;0xF)|(((hi)&amp;0xF)&lt;&lt;4))" />
         <VCCodeMacro Name="__ATTR_PURE__" Value="" />
         <VCCodeMacro Name="__ATTR_CONST__" Value="" />
         <VCCodeMacro Name="__inline__" Value="" />
@@ -42,7 +45,7 @@
         <VCCodeMacro Name="NOINLINE" Value="__attribute__((noinline))" />
       </VCCodeMacros>
       <VCCodeVariables>
-        <VCCodeVariable Name="DATAPIN" />
+        <VCCodeVariable Name="RSSIIRQNR" />
       </VCCodeVariables>
     </VCCodeModel>
   </Program>

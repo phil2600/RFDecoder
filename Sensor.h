@@ -20,9 +20,7 @@ public:
 	//
 	// Global methods
 	//
-	GlobalDecoder*  get_dec();
 	int				get_id();
-	GlobalDecoder*	_dec;
 protected:
 	int				_id;
 	static int		_total;

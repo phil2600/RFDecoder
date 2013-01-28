@@ -74,20 +74,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ASensorFactory.h" />
+    <ClInclude Include="OregonDecoderV3.h" />
     <ClInclude Include="SensorsImplementation.h" />
     <ClInclude Include="GlobalDecoder.h" />
-    <ClInclude Include="OregonDecoder.h" />
+    <ClInclude Include="OregonDecoderV2.h" />
     <ClInclude Include="Sensor.h" />
     <ClInclude Include="SensorFactory.h" />
     <ClInclude Include="SingletonDecoder.h" />
     <ClInclude Include="Visual Micro\.RF.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ASensorFactory.cpp" />
+    <ClCompile Include="OregonDecoderV3.cpp" />
     <ClCompile Include="SensorsImplementation.cpp" />
     <ClCompile Include="GlobalDecoder.cpp" />
-    <ClCompile Include="OregonDecoder.cpp" />
+    <ClCompile Include="OregonDecoderV2.cpp" />
     <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="SensorFactory.cpp" />
     <ClCompile Include="SingletonDecoder.cpp" />

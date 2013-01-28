@@ -2,19 +2,9 @@
 #include "SingletonDecoder.h"
 #include "SensorsImplementation.h"
 
-#define BYTE2LO(c)           ((c)&0xF)
-#define BYTE2HI(c)           (((c)>>4)&0xF)
-#define NIBBLES2BYTE(lo, hi) ((((hi)&0xF)<<4)|((lo)&0xF))
-#define INSERTLO(c, lo)      (((c)&0xF0)|((lo)&0xF))
-#define INSERTHI(c, hi)      (((c)&0xF)|(((hi)&0xF)<<4))
-
-void	
-SensorFactory::initialize(OregonDecoderV2*	dec)
-{
-	_dec = dec;
-	SingletonDecoder::getInstance()->setValue(dec);
-}
-
+#define IS_THN132N(d)		(d[0] == 0xEA && d[1] == 0x4C)
+#define IS_THGR228N(d)		(d[0] == 0x1A && d[1] == 0x2D)
+#define IS_THGR810(d) 		(d[0] == 0xFA && d[1] == 0x28)
 
 /*
 ** Getters for Sensor creation
@@ -26,6 +16,7 @@ SensorFactory::new_THGR810()
 	_sensors[_index]._type = eTHGR810;
 	_sensors[_index]._used = 0;
 	_sensors[_index]._id = 0;
+	_sensors[_index]._decoder = new OregonDecoderV3();
 	return _sensors[_index++]._sensor;
 }
 
@@ -36,6 +27,18 @@ SensorFactory::new_THN132N()
 	_sensors[_index]._type = eTHN132N;
 	_sensors[_index]._used = 0;
 	_sensors[_index]._id = 0;
+	_sensors[_index]._decoder = new OregonDecoderV2();
+	return _sensors[_index++]._sensor;
+}
+
+Sensor*
+SensorFactory::new_THGR228N()
+{
+    _sensors[_index]._sensor = new THGR228N();
+	_sensors[_index]._type = eTHGR228N;
+	_sensors[_index]._used = 0;
+	_sensors[_index]._id = 0;
+	_sensors[_index]._decoder = new OregonDecoderV2();
 	return _sensors[_index++]._sensor;
 }
 
@@ -46,6 +49,7 @@ SensorFactory::new_LC_sensor()
 	_sensors[_index]._type = eLC;
 	_sensors[_index]._used = 0;
 	_sensors[_index]._id = 0;
+	_sensors[_index]._decoder = NULL;
 	return _sensors[_index++]._sensor;
 }
 
@@ -73,16 +77,21 @@ void
 SensorFactory::trigger(word old_pulse)
 {
 	if (0 != old_pulse)
-		if (_dec->nextPulse(old_pulse))
-			_dec->printSerial();
+		for (int i = 0; i < _index; i++)
+		{
+			if (_sensors[i]._decoder && _sensors[i]._decoder->nextPulse(old_pulse))
+			{
+				parse_data(_sensors[i]._decoder);
+			}
+		}
 }
 
 
 void
-SensorFactory::print_data_flow()
+SensorFactory::print_data_flow(GlobalDecoder*	dec)
 {
 	byte		pos;
-	const byte* data = _dec->get_data(pos);
+	const byte* data = dec->get_data(pos);
 
 	for (byte i = 0; i < pos; ++i) 
 	{
@@ -93,102 +102,40 @@ SensorFactory::print_data_flow()
 }
 
 
+
 Sensor*
-SensorFactory::get_current_sensor()
+SensorFactory::get_current_sensor(const byte* data)
 {
 	Sensor*		tmp = NULL;
-	byte		pos;
-	const byte* data = _dec->get_data(pos);
 	
 	if (!validate_checksum(data))
 		return NULL;
-	if (data[0] == 0xEA && data[1] == 0x4C)
-	{
-		tmp = search_sensor(data[3], eTHN132N);
-		if (!tmp)
-			return add_id(data[3], eTHN132N);
-		else
-			return tmp;
-	}
 
-	if (data[0] == 0x1A && data[1] == 0x2D)
-	{
-		tmp = search_sensor(data[3], eTHGR810);
-		if (!tmp)
-			return add_id(data[3], eTHGR810);
-		else
-			return tmp;
-	}
+	if (IS_THN132N(data))
+		return search_sensor(data[3], eTHN132N);
+
+	if (IS_THGR228N(data))
+		return search_sensor(data[3], eTHGR228N);
 
 	if (data[0] == 0xFF && data[1] == 0xFF)
-	{
-		tmp = search_sensor(data[3], eLC);
-		if (!tmp)
-			return add_id(data[3], eLC);
-		else
-			return tmp;
-	}
+		return search_sensor(data[3], eLC);
+
+	if (IS_THGR810(data))
+		return search_sensor(data[3], eTHGR810);
 
 	return NULL;
 }
 
 void
-SensorFactory::parse_data()
+SensorFactory::parse_data(GlobalDecoder*	dec)
 {
-	byte		pos;
-	const byte* data = _dec->get_data(pos);
-
-	Serial.println();
 	
-	
-	
-	print_data_flow(); //debug
-	Sensor* current = get_current_sensor();
-	if (current != NULL)
-		current->print(data);
-	//else
-	//{
-	//	Serial.println("NULL Sensor Returned");
-	//	Serial.print(current->Name());
+	//print_data_flow(dec); //debug
+	Sensor* current = get_current_sensor(dec->get_data());
+	if (current)
+		current->print(dec->get_data());
 
-	//	for (int i = 0; i < _index; i++)
-	//	{
-	//			Serial.println();
-	//			Serial.println(i);
-	//			Serial.print("\tUsed: ");
-	//			Serial.println(_sensors[i]._used);
-	//			Serial.print("\tType: ");
-	//			Serial.print(_sensors[i]._type);
-	//			Serial.print("\tID: ");
-	//			Serial.println(_sensors[i]._id, HEX);
-	//			Serial.print("\tName: ");
-	//			Serial.println(_sensors[i]._sensor->Name());
-	//			
-	//	}
-
-	//}
-	//if (data[0] == 0xEA && data[1] == 0x4C)
-	//{
-
-	//}
-	//// Inside Temp-Hygro : THGR228N,...
-	//else if(data[0] == 0x1A && data[1] == 0x2D)
-	//{
-	//	//parse_THGR810();
-	//	Serial.print("[THGR810,...] Id:");
-	//	Serial.print(data[3], HEX);
-	//	Serial.print(", Channel:");
-	//	Serial.print(channel(data));
-	//	Serial.print(", temp:");
-	//	Serial.print(temperature(data));
-	//	Serial.print(", hum:");
-	//	Serial.print(humidity(data));
-	//	Serial.print(", bat:");
-	//	Serial.print(battery(data)); 
-	//	Serial.println();
-	//}
-
-	_dec->reset_decoder();
+	dec->reset_decoder();
 }
 
 /*
@@ -198,14 +145,10 @@ Sensor*
 SensorFactory::search_sensor(byte	id, enum type	t) // FIXME: Add Enumeration with Sensor TYPE
 {
 	for (int i = 0; i < _index; i++)
-	{
 		if (_sensors[i]._type == t && _sensors[i]._id == id)
-		{
 			return _sensors[i]._sensor;
-		}
-	}
-	
-	return NULL;
+
+	return add_id(id, t);
 }
 
 Sensor*	
@@ -230,14 +173,14 @@ SensorFactory::Sum(byte count, const byte* data)
 {
 	int s = 0;
 	 
-	for(byte i = 0; i<count;i++)
+	for (byte i = 0; i < count; i++)
 	{
-		s += (data[i]&0xF0) >> 4;
-		s += (data[i]&0xF);
+		s += (data[i] & 0xF0) >> 4;
+		s += (data[i] & 0xF);
 	}
 	 
-	if(int(count) != count)
-		s += (data[count]&0xF0) >> 4;
+	if (int(count) != count)
+		s += (data[count] & 0xF0) >> 4;
 	 
 	return s;
 }
@@ -245,8 +188,8 @@ SensorFactory::Sum(byte count, const byte* data)
 byte 
 SensorFactory::checksum(const byte* data)
 {
-	int c = ((data[6]&0xF0) >> 4) + ((data[7]&0xF)<<4);
-	int s = ((Sum(6, data) + (data[6]&0xF) - 0xa) & 0xff);
+	int c = ((data[6] & 0xF0) >> 4) + ((data[7] & 0xF) << 4);
+	int s = ((Sum(6, data) + (data[6] & 0xF) - 0xa) & 0xff);
 	return s == c; 
 }
 	 
@@ -259,11 +202,14 @@ SensorFactory::checksum2(const byte* data)
 byte
 SensorFactory::validate_checksum(const byte* data)
 {
-	if (data[0] == 0xEA && data[1] == 0x4C)
+	if (IS_THN132N(data))
 		return checksum(data);
 
-	if (data[0] == 0x1A && data[1] == 0x2D)
-		return checksum2(data); //FIXME : check if good
-		return 1;
+	if (IS_THGR228N(data))
+		return checksum2(data);
+
+	if (IS_THGR810(data))
+		return checksum2(data);
+
 	return 0;
 }

@@ -1,32 +1,45 @@
-//#pragma once
+#pragma once
 #ifndef _SINGLETONDECODER_H_
 # define _SINGLETONDECODER_H_
+# include "Arduino.h"
 
-# include "OregonDecoderV2.h"
-
-class SingletonDecoder
+template <typename T>
+class Singleton
 {
 private:
-  SingletonDecoder ()
-    : _value (0) { }
-  ~SingletonDecoder () { }
+	//Singleton () { }
+	//~Singleton () { }
 
 public:
-  void setValue (OregonDecoderV2* decoder);
-  OregonDecoderV2* getValue ();
+	static T*	getInstance ()
+	{
+		if (NULL == _singleton)
+		{
+			Serial.println("New Singleton");
+			_singleton = new T;
+		}
+		else
+			Serial.println("Already Created");
 
-  // Fonctions de création et destruction du singleton
-  static SingletonDecoder *getInstance ();
+		(static_cast<T*> (_singleton))->print();
+		return (static_cast<T*> (_singleton));
+	}
 
-  static void kill ();
-
+	static void kill ()
+	{
+		if (NULL != _singleton)
+		{
+			delete _singleton;
+			_singleton = NULL;
+		}
+	}
 
 private:
-  OregonDecoderV2* _value;
-  static SingletonDecoder *_singleton;
+	static T*	_singleton;
 };
 
-// Initialisation du singleton à NULL
-//SingletonDecoder *SingletonDecoder::_singleton = NULL;
+template <typename T>
+T *Singleton<T>::_singleton = NULL;
+
 
 #endif
