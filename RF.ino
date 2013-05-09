@@ -56,12 +56,5 @@ void	loop()
     sei();
  
 	sensor_pool.trigger(old_pulse);
-
-/******************************/
-
-	//sensor_pool.send_client();
-
-	
-/******************************/
 }
 

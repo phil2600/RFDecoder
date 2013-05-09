@@ -242,36 +242,5 @@ SensorFactory::init_server()
 void
 SensorFactory::send_client()
 {
-	//int index = 0;
-	//_client = _server->available();
-	//if (_client)
-	//	while (_client.connected()) 
-	//	{
-	//		if (_client.available())
-	//		{
-	//			Serial.println("[-] Send");
-	//			_client.println("THGR810-55;9;13.60;H;94");
-	//			_client.println("THN132N-AC;2;21.80;H");
-	//			_client.println("THN132N-AC;2;21.80;H");
-	//			_client.println("THN132N-5E;4;20.30;H");
-	//			_client.println("THN132N-5E;4;20.30;H");
-
-	//			_client.println("THN132N-AC;2;21.90;H");
-	//			_client.println("THN132N-AC;2;21.90;H");
-	//			_client.println("THGR810-55;9;13.70;H;95");
-	//			_client.println("THN132N-5E;4;21.30;H");
-	//			_client.println("THN132N-5E;4;21.30;H");
-
-	//			_client.println("THGR810-55;9;14.70;H;96");
-	//			_client.println("THN132N-AC;2;25.00;H");
-	//			_client.println("THN132N-AC;2;25.00;H");
-	//			_client.println("THN132N-5E;4;25.30;H");
-	//			_client.println("THN132N-5E;4;25.30;H");
-
-	//			Serial.println("[+] Send");
-	//			_client.stop();
-	//		}
-	//	}
-	//	delay(1);
-	//	_client.stop();
+	// OLD DEBUG STUFF
 }
