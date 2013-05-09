@@ -1,0 +1,16 @@
+rrdtool create tempDB.rrd \
+--start N --step 120 \
+DS:THN132N-AC:GAUGE:600:-20:40 \
+DS:THN132N-5E:GAUGE:600:-20:40 \
+DS:THGR810-55:GAUGE:600:-20:40 \
+RRA:MIN:0.5:12:8760 \
+RRA:MAX:0.5:12:8760 \
+RRA:AVERAGE:0.5:1:8760
+
+rrdtool create hygDB.rrd \
+--start N --step 120 \
+DS:THGR810-55:GAUGE:600:0:99 \
+RRA:MIN:0.5:12:8760 \
+RRA:MAX:0.5:12:8760 \
+RRA:AVERAGE:0.5:1:8760
+
