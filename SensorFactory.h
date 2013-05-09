@@ -3,12 +3,19 @@
 # define _SENSOR_FACTORY_H_
 # include "OregonDecoderV2.h"
 # include "OregonDecoderV3.h"
+# include "LacrosseDecoder.h"
 # include "Sensor.h"
+
+
+/*************** FIXME ***********************/
+# include "SPI.h"
+# include "Ethernet.h"
+/*************** FIXME ***********************/
 
 /*
 ** Factory Definition from its abstract
 */
-class SensorFactory// : public ASensorFactory
+class SensorFactory
 {
 public:
 	SensorFactory(): _index(0) { }
@@ -28,6 +35,8 @@ public:
 	void	parse_data(GlobalDecoder*	dec);
 	Sensor*	search_sensor(byte	id, enum type	t);
 	Sensor*	add_id(byte	id, enum type	t);
+	void	send_client();
+	void	init_server();
 private:
 	typedef struct sensors
 	{
@@ -50,5 +59,11 @@ private:
 	byte	checksum(const byte* data);
 	byte	checksum2(const byte* data);
 	byte	validate_checksum(const byte* data);
+
+	EthernetServer*	_server; //FIXME
+
+	EthernetClient	_client; //FIXME
+	char			_client_buffer[1024];
+	byte			_is_writable;
 };
 #endif

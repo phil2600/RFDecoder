@@ -19,8 +19,7 @@ temperature(const byte*	data)
 byte 
 humidity(const byte* data)
 {
-	return (data[7] & 0xF) * 10 \
-		+ ((data[7] & 0xF0) >> 4);
+	return (BYTE2LO(data[7]) * 10 + BYTE2HI(data[6]));
 }
 	 
 char 
@@ -33,24 +32,6 @@ byte
 channel(const byte* data) //FIXME : (1 << (channel-1))
 {
 	return BYTE2HI(data[2]);
-	//byte channel = 7;
-	//switch (data[2])
-	//{
-	//	case 0x10:
-	//		channel = 1;
-	//		break;
-	//	case 0x20:
-	//		channel = 2;
-	//		break;
-	//	case 0x40:
-	//		channel = 3;
-	//		break;
-	//	case 0x50:
-	//		channel = 3;
-	//		break;
-	//	}
-	// 
-	//	return channel;
 }
 
 /*
@@ -76,7 +57,24 @@ THGR228N::print(const byte* data)
 	Serial.print("\tHumidity: ");
 	Serial.print(humidity(data));
 	Serial.print("\tBat:");
-	Serial.println(battery(data)); 
+	Serial.println(battery(data));
+}
+
+void
+THGR228N::print_client(const byte* data, EthernetClient client)
+{
+	client.print(Name());
+	client.print(";");
+	client.print(data[3], HEX);
+	client.print(";");
+	client.print(channel(data));
+	client.print(";");
+	client.print(temperature(data));
+	client.print(";");
+	client.print(battery(data));
+	client.print(";");
+	client.print(humidity(data));
+	client.println();
 }
 
 
@@ -103,9 +101,25 @@ THGR810::print(const byte* data)
 	Serial.print("\tHumidity: ");
 	Serial.print(humidity(data));
 	Serial.print("\tBat:");
-	Serial.println(battery(data)); 
+	Serial.println(battery(data));
 }
 
+void
+THGR810::print_client(const byte* data, EthernetClient client)
+{
+	client.print(Name());
+	client.print(";");
+	client.print(data[3], HEX);
+	client.print(";");
+	client.print(channel(data));
+	client.print(";");
+	client.print(temperature(data));
+	client.print(";");
+	client.print(battery(data));
+	client.print(";");
+	client.print(humidity(data));
+	client.println();
+}
 
 /*
 ** THN132N
@@ -127,14 +141,27 @@ THN132N::print(const byte* data)
 	Serial.print("\tTemp: ");
 	Serial.println(temperature(data));
 	Serial.print("\tBat:");
-	Serial.println(battery(data)); 
+	Serial.println(battery(data));
 }
 
+void
+THN132N::print_client(const byte* data, EthernetClient client)
+{
+	client.print(Name());
+	client.print(";");
+	client.print(data[3], HEX);
+	client.print(";");
+	client.print(channel(data));
+	client.print(";");
+	client.print(temperature(data));
+	client.print(";");
+	client.print(battery(data));
+	client.println();
+}
 
 /*
 ** LaCrosseNoName
 */
-
 char* 
 LaCrosseNoName::Name()
 {
@@ -148,4 +175,13 @@ LaCrosseNoName::print(const byte* data)
 	Serial.print(' ');
 	Serial.print(data[3], HEX);
 	Serial.println();
+}
+
+void
+LaCrosseNoName::print_client(const byte* data, EthernetClient client)
+{
+	client.print(Name());
+	client.print(";");
+	client.print(data[3], HEX);
+	client.println();
 }

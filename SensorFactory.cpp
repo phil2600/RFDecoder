@@ -49,7 +49,7 @@ SensorFactory::new_LC_sensor()
 	_sensors[_index]._type = eLC;
 	_sensors[_index]._used = 0;
 	_sensors[_index]._id = 0;
-	_sensors[_index]._decoder = NULL;
+	_sensors[_index]._decoder = new LacrosseDecoder();
 	return _sensors[_index++]._sensor;
 }
 
@@ -129,12 +129,25 @@ SensorFactory::get_current_sensor(const byte* data)
 void
 SensorFactory::parse_data(GlobalDecoder*	dec)
 {
-	
 	//print_data_flow(dec); //debug
 	Sensor* current = get_current_sensor(dec->get_data());
 	if (current)
 		current->print(dec->get_data());
-
+	if (current)
+	{
+		_client = _server->available();
+		if (_client)
+		{
+			Serial.println("client");
+			if (_client.available())
+			{
+				Serial.println("Sent to client");
+				current->print_client(dec->get_data(), _client);
+				delay(1);
+			}
+		}
+	}
+		
 	dec->reset_decoder();
 }
 
@@ -212,4 +225,53 @@ SensorFactory::validate_checksum(const byte* data)
 		return checksum2(data);
 
 	return 0;
+}
+
+	byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+	byte ip[] = { 192, 168, 1, 2 };
+	byte gateway[] = { 192, 168, 1, 254 };
+
+void
+SensorFactory::init_server()
+{
+	_server = new EthernetServer(1337); //FIXME
+	Ethernet.begin(mac, ip, gateway);
+	_server->begin();
+}
+
+void
+SensorFactory::send_client()
+{
+	//int index = 0;
+	//_client = _server->available();
+	//if (_client)
+	//	while (_client.connected()) 
+	//	{
+	//		if (_client.available())
+	//		{
+	//			Serial.println("[-] Send");
+	//			_client.println("THGR810-55;9;13.60;H;94");
+	//			_client.println("THN132N-AC;2;21.80;H");
+	//			_client.println("THN132N-AC;2;21.80;H");
+	//			_client.println("THN132N-5E;4;20.30;H");
+	//			_client.println("THN132N-5E;4;20.30;H");
+
+	//			_client.println("THN132N-AC;2;21.90;H");
+	//			_client.println("THN132N-AC;2;21.90;H");
+	//			_client.println("THGR810-55;9;13.70;H;95");
+	//			_client.println("THN132N-5E;4;21.30;H");
+	//			_client.println("THN132N-5E;4;21.30;H");
+
+	//			_client.println("THGR810-55;9;14.70;H;96");
+	//			_client.println("THN132N-AC;2;25.00;H");
+	//			_client.println("THN132N-AC;2;25.00;H");
+	//			_client.println("THN132N-5E;4;25.30;H");
+	//			_client.println("THN132N-5E;4;25.30;H");
+
+	//			Serial.println("[+] Send");
+	//			_client.stop();
+	//		}
+	//	}
+	//	delay(1);
+	//	_client.stop();
 }
